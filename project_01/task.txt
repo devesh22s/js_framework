@@ -1,0 +1,18 @@
+REST API - json
+
+
+GET/users = HTML document rendering
+GET/api/users - list all users in json formate
+
+GET/api/users/1 - get the user with id-1      --> these are dynamic paramater that is :id
+GET/api/users/2 - get the user with id-2
+
+POST/api/users - create new users
+
+PATCH/api/users/1 -- edit/update the user which has id 1
+
+DELETE/api/iusers/1 -- delete the user which has id 1
+
+
+
+WE use mackaroo website for data, which generate fake data for testing, then we will use mongo db
