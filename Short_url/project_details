@@ -1,0 +1,8 @@
+Design a url shortner services that take the url and return it in short form , redirecting the user to the previously provideed url.
+
+Also keep the track of total visits.
+
+Routes->
+POST: generates a new short url  ,, (we use a service that is nanoid, or shortid from npm js.com )
+GET/:id - redirects the user to the original url.
+GET/url/analytics - return the clicks for the provided short id.
