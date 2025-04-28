@@ -1,26 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URL Shortener</title>
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body { background-color: #f8f9fa; }
+    .hero { padding: 4rem 1rem; }
+    .hero h1 { font-weight: 700; }
+    .table-responsive { margin-top: 2rem; }
+    footer { background: #fff; }
+  </style>
 </head>
 <body>
 
-    <h1>URL Shortner</h1>
-    <div>
-        <form method="POST" action="/url">
-            <label>Enter your url</label>
-            <input type="text"
-             name="Url"
-             placeholder="http://example.com"/>
-             <button type="submit">Generate</button>
-        </form>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="/">URL Shortener</a>
     </div>
+  </nav>
 
-    <!-- <% urls.forEach(url =>{ %>
-        <li><%= url.shortid %></li>
+  <!-- Hero Section -->
+  <section class="hero text-center">
+    <div class="container">
+      <h1 class="display-4">Shorten Your Links Instantly</h1>
+      <p class="lead text-muted">Generate clean, shareable URLs in one click.</p>
+    </div>
+  </section>
 
-    <%}) %> -->
+  <div class="container">
+
+    <!-- Generated URL Alert -->
+    <% if (id) { %>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong>
+        Your short URL is
+        <a href="/<%= id %>" target="_blank" class="alert-link">
+          http://localhost:8081/<%= id %>
+        </a>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <!-- URL Input Form -->
+    <form class="row g-2 align-items-center" method="POST" action="/url">
+      <div class="col-sm-9">
+        <input
+          type="url"
+          name="Url"
+          class="form-control form-control-lg"
+          placeholder="https://example.com"
+          required
+        />
+      </div>
+      <div class="col-sm-3 d-grid">
+        <button type="submit" class="btn btn-primary btn-lg">
+          Generate
+        </button>
+      </div>
+    </form>
+
+    <!-- URL Table -->
+    <% if (urls && urls.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Short ID</th>
+              <th>Original URL</th>
+              <th>Clicks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% urls.forEach((url, idx) => { %>
+              <tr>
+                <td><%= idx + 1 %></td>
+                <td>
+                  <a href="/<%= url.shortid %>" target="_blank">
+                    <%= url.shortid %>
+                  </a>
+                </td>
+                <td>
+                  <a href="<%= url.redirectUrl %>" target="_blank">
+                    <%= url.redirectUrl %>
+                  </a>
+                </td>
+                <td><%= url.clickCount.length %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p class="text-center text-muted mt-4">No URLs generated yet.</p>
+    <% } %>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-3 mt-5">
+    <small class="text-muted">
+      &copy; <%= new Date().getFullYear() %> URL Shortener. All rights reserved.
+    </small>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  ></script>
 </body>
 </html>

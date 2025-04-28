@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
 const urlSchema = new mongoose.Schema({
-    shortid:{
+    shortid: {
         type: String,
         required: true,
         unique: true
     },
-    redirectUrl:{
+    redirectUrl: {
         type: String,
         required: true
     },
-    clickCount:[{timestamp:{type: Number}}]
-}, {typestamp: true})
+    clickCount: [{ timestamp: { type: Number } }] // Array to store timestamps of clicks
+}, { timestamps: true });
 
-const Url = mongoose.model('Url', urlSchema);
-module.exports = Url;
+const URL = mongoose.model('Url', urlSchema);
+module.exports = URL;

@@ -1,9 +1,12 @@
-const express = require('express')
-
+const express = require('express');
+const URL = require('../Model/Model');
 const router = express.Router();
 
+// Routes/staticRouter.js
+router.get("/", async (req, res) => {
+    const allUrls = await URL.find({});
+    return res.render('home', { urls: allUrls });
+  });
+  
 
-router.get("/", (req, res)=>{
-    return res.render('home')
-})
-module.exports = router
+module.exports = router;
