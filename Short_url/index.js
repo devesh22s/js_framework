@@ -1,9 +1,14 @@
 const express = require('express');
 const path = require('path');
 const { myConnection } = require('./Connection/Connect');
+
+const URL = require('./Model/Model');
+
+//  all routers
+
 const urlRoute = require('./Routes/Route');
 const staticRouter = require('./Routes/staticRouter');
-const URL = require('./Model/Model');
+const userRouter = require('./Routes/user')
 
 // MongoDB Connection
 const url = 'mongodb://127.0.0.1:27017/url';
@@ -25,6 +30,8 @@ app.set("views", path.resolve("./views"));
 // Routes
 app.use("/url", urlRoute);
 app.use("/", staticRouter);
+app.use("/user", userRouter);
+
 
 // Redirect short URL to original URL
 app.get('/:shortid', async (req, res) => {

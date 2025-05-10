@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+            border-color: #4CAF50;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Login Your Account</h1>
+    </header>
+
+    <div class="container">
+        <form action="/user/login" method="post">
+
+            <label for="email">Enter your Email :</label>
+            <input type="email" id="email" name="email" required />
+
+            <label for="password">Enter your password :</label>
+            <input type="password" id="password" name="password" required />
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="footer">
+            <p>Do not have an account? <a href="/signup">Sign up here</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

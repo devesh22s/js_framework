@@ -1,119 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>URL Shortener</title>
-  <!-- Bootstrap 5 CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-  <style>
-    body { background-color: #f8f9fa; }
-    .hero { padding: 4rem 1rem; }
-    .hero h1 { font-weight: 700; }
-    .table-responsive { margin-top: 2rem; }
-    footer { background: #fff; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .url-generated {
+            background-color: #e7f5e7;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .url-generated a {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <header>
+        <h1>URL Shortener</h1>
+    </header>
+
     <div class="container">
-      <a class="navbar-brand" href="/">URL Shortener</a>
+
+        <% if (locals.id) { %>
+            <div class="url-generated">
+                <p>URL Generated: <a href="/<%= id %>">http://localhost:8081/<%= id %></a></p>
+            </div>
+        <% } %>
+
+        <form method="POST" action="/url">
+            <label for="url">Enter your URL:</label>
+            <input type="text" id="url" name="Url" placeholder="http://example.com" required />
+            <button type="submit">Generate</button>
+        </form>
+
+        <% if (locals.urls) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>S. No</th>
+                        <th>Short ID</th>
+                        <th>Redirect URL</th>
+                        <th>Clicks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% urls.forEach((url, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= url.shortid %></td>
+                            <td><a href="/<%= url.shortid %>"><%= url.redirectUrl %></a></td>
+                            <td><%= url.clickCount.length %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+
     </div>
-  </nav>
 
-  <!-- Hero Section -->
-  <section class="hero text-center">
-    <div class="container">
-      <h1 class="display-4">Shorten Your Links Instantly</h1>
-      <p class="lead text-muted">Generate clean, shareable URLs in one click.</p>
-    </div>
-  </section>
-
-  <div class="container">
-
-    <!-- Generated URL Alert -->
-    <% if (id) { %>
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Success!</strong>
-        Your short URL is
-        <a href="/<%= id %>" target="_blank" class="alert-link">
-          http://localhost:8081/<%= id %>
-        </a>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
-    <% } %>
-
-    <!-- URL Input Form -->
-    <form class="row g-2 align-items-center" method="POST" action="/url">
-      <div class="col-sm-9">
-        <input
-          type="url"
-          name="Url"
-          class="form-control form-control-lg"
-          placeholder="https://example.com"
-          required
-        />
-      </div>
-      <div class="col-sm-3 d-grid">
-        <button type="submit" class="btn btn-primary btn-lg">
-          Generate
-        </button>
-      </div>
-    </form>
-
-    <!-- URL Table -->
-    <% if (urls && urls.length > 0) { %>
-      <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle">
-          <thead class="table-dark">
-            <tr>
-              <th>#</th>
-              <th>Short ID</th>
-              <th>Original URL</th>
-              <th>Clicks</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% urls.forEach((url, idx) => { %>
-              <tr>
-                <td><%= idx + 1 %></td>
-                <td>
-                  <a href="/<%= url.shortid %>" target="_blank">
-                    <%= url.shortid %>
-                  </a>
-                </td>
-                <td>
-                  <a href="<%= url.redirectUrl %>" target="_blank">
-                    <%= url.redirectUrl %>
-                  </a>
-                </td>
-                <td><%= url.clickCount.length %></td>
-              </tr>
-            <% }); %>
-          </tbody>
-        </table>
-      </div>
-    <% } else { %>
-      <p class="text-center text-muted mt-4">No URLs generated yet.</p>
-    <% } %>
-
-  </div>
-
-  <!-- Footer -->
-  <footer class="text-center py-3 mt-5">
-    <small class="text-muted">
-      &copy; <%= new Date().getFullYear() %> URL Shortener. All rights reserved.
-    </small>
-  </footer>
-
-  <!-- Bootstrap 5 JS Bundle -->
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-  ></script>
 </body>
 </html>
