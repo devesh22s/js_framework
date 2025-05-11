@@ -1,6 +1,8 @@
 const {v4: uuidv4} = require('uuid')
+const {setUser} = require('../services/auth')
 
 const User = require('../Model/user')
+const { response } = require('express')
 async function handleSignup(req, res){
     const {name, email, password}= req.body
     await User.create({
@@ -19,11 +21,10 @@ async function handleLogin(req, res){
     if(!user) return res.render('login',{
         error: "invalid username or password"
     })
+    
+    const token = setUser(user)
+    res.cookie("uid", token)
     return res.redirect("/")
-
-
-    const sessionId = uuidv4();
-    return  res.redirect("/")
 }
 module.exports = {
     handleLogin,

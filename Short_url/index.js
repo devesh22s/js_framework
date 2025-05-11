@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const { myConnection } = require('./Connection/Connect');
+const cookieParser = require('cookie-parser')
+const restricedToLoggedInUserOnly = require('./Middleware/auth')
 
 const URL = require('./Model/Model');
 
@@ -22,13 +24,14 @@ const port = 8081;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Set view engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
 // Routes
-app.use("/url", urlRoute);
+app.use("/url", restricedToLoggedInUserOnly, urlRoute);
 app.use("/", staticRouter);
 app.use("/user", userRouter);
 
